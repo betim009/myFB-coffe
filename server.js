@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 
 
@@ -22,6 +22,19 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
+// Get a reference to the "coffees" collection
+const coffeesCollectionRef = collection(db, 'coffes');
 
+console.log("resultado", coffeesCollectionRef)
+async function getCoffees() {
+    try {
+        const querySnapshot = await getDocs(coffeesCollectionRef);
+        querySnapshot.forEach((doc) => {
+            console.log("resultado 2:", doc.id, " => ", doc.data());
+        });
+    } catch (error) {
+        console.error("Erro ao buscar os dados:", error);
+    }
+}
 
-
+getCoffees();
